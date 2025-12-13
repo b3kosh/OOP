@@ -187,7 +187,7 @@ public class Playlist {
                         index++,
                         song.getTitle(),
                         song.getArtist().getName(),
-                        formatDuration(song.getDurSeconds())); // ИСПРАВЛЕНО
+                        formatDuration(song.getDurSeconds()));
             }
         }
     }
