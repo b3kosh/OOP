@@ -55,7 +55,7 @@ public class Playlist {
 
         this.songs.add(song);
         this.totalDurationSeconds += song.getDurSeconds();
-        System.out.println("✓ Добавлено: \"" + song.getTitle() +
+        System.out.println("Добавлено: \"" + song.getTitle() +
                 "\" в плейлист \"" + name + "\"");
     }
 
@@ -77,7 +77,7 @@ public class Playlist {
             if (song.getTitle().equalsIgnoreCase(songTitle)) {
                 totalDurationSeconds -= song.getDurSeconds();
                 iterator.remove();
-                System.out.println("✗ Удалено: \"" + songTitle +
+                System.out.println("Удалено: \"" + songTitle +
                         "\" из плейлиста \"" + name + "\"");
                 return true;
             }
@@ -92,7 +92,7 @@ public class Playlist {
         boolean removed = songs.remove(songToRemove);
         if (removed) {
             totalDurationSeconds -= songToRemove.getDurSeconds();
-            System.out.println("✗ Удалено: \"" + songToRemove.getTitle() +
+            System.out.println("Удалено: \"" + songToRemove.getTitle() +
                     "\" из плейлиста \"" + name + "\"");
         }
         return removed;
