@@ -10,31 +10,19 @@ public class Artist {
     }
 
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
     public String getGenre() { return genre; }
-    public void setGenre(String genre) { this.genre = genre; }
 
-    public void perform() {
-        System.out.println(name + " выступает в жанре " + genre + ".");
+    @Override
+    public String toString() { return name + " [" + genre + "]"; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Artist)) return false;
+        Artist artist = (Artist) o;
+        return Objects.equals(name, artist.name) && Objects.equals(genre, artist.genre);
     }
 
     @Override
-    public String toString() {
-        return "Исполнитель: " + name + " (" + genre + ")";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Artist other = (Artist) obj;
-        return Objects.equals(name, other.name) &&
-                Objects.equals(genre, other.genre);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, genre);
-    }
+    public int hashCode() { return Objects.hash(name, genre); }
 }
