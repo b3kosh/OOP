@@ -9,13 +9,11 @@ public class Song extends MediaItem {
     public Artist getArtist() { return artist; }
 
     @Override
-    public void play() {
-        System.out.println("Playing: " + getTitle());
-    }
+    public void play() { System.out.println("Playing: " + getTitle()); }
 
     @Override
     public String toString() {
-        return String.format("ID: %d | Song: %-20s | Artist: %s",
-                getId(), getTitle(), artist.getName());
+        return String.format("Song: %-20s | Artist: %-15s | Length: %d sec",
+                getTitle(), artist.getName(), getDurSeconds());
     }
 }
