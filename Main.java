@@ -1,16 +1,17 @@
 import java.util.Scanner;
 
 public class Main {
+    private static Playlist myPlaylist = new Playlist("❤️Favourites");
+    private static MusicDAO dao = new MusicDAO();
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Playlist myPlaylist = new Playlist("❤️Favourites");
 
-        Artist art1 = new Artist("The Weeknd", "R&B");
-        myPlaylist.addSong(new Song("Blinding Lights", 200, art1));
-        myPlaylist.addSong(new Song("Save Your Tears", 215, art1));
+
+        refreshPlaylist();
 
         while (true) {
-            System.out.println("\nMenu: 1.Show | 2.Add | 3.Sort(A-Z) | 4.Sort(length) | 5.🧐 | 0.Quit");
+            System.out.println("\nMenu: 1.Show | 2.Add | 3.Delete | 4.Sort (Dur) | 0.Quit");
             System.out.print("> ");
             String input = sc.nextLine();
 
@@ -20,18 +21,35 @@ public class Main {
                     System.out.print("Name: "); String t = sc.nextLine();
                     System.out.print("Length (sec): "); int d = Integer.parseInt(sc.nextLine());
                     System.out.print("Artist: "); String a = sc.nextLine();
-                    myPlaylist.addSong(new Song(t, d, new Artist(a, "Unknown")));
+
+                    Song newSong = new Song(t, d, new Artist(a, "Unknown"));
+                    dao.saveSong(newSong);
+                    refreshPlaylist();
                 }
-                case "3" -> myPlaylist.sortByTitle();
-                case "4" -> myPlaylist.sortByDuration();
-                case "5" -> {
-                    System.out.print("Artist's name: ");
-                    myPlaylist.findByArtist(sc.nextLine());
+                case "3" -> {
+                    System.out.print("Enter ID to delete: ");
+                    try {
+                        int id = Integer.parseInt(sc.nextLine());
+                        dao.deleteMedia(id);
+                        refreshPlaylist();
+                    } catch (Exception e) { System.out.println("Invalid ID format."); }
                 }
-                case "0" -> { System.out.println("Bye!"); return; }
-                default -> System.out.println("Error.");
+                case "4" -> {
+                    myPlaylist.sortByDuration();
+                    myPlaylist.showAll();
+                }
+                case "0" -> { return; }
+                default -> System.out.println("Unknown command.");
             }
         }
     }
-}
 
+
+    private static void refreshPlaylist() {
+        Playlist fresh = new Playlist("❤️Favourites");
+        for (Song s : dao.getAllSongs()) {
+            fresh.addSong(s);
+        }
+        myPlaylist = fresh;
+    }
+}
