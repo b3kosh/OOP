@@ -10,12 +10,12 @@ public class Song extends MediaItem {
 
     @Override
     public void play() {
-        System.out.println("Воспроизведение: " + getTitle() + " - " + artist.getName());
+        System.out.println("Playing: " + getTitle() + " - " + artist.getName());
     }
 
     @Override
     public String toString() {
-        return String.format("%-20s | %-15s | %d сек", getTitle(), artist.getName(), getDurSeconds());
+        return String.format("%-20s | %-15s | %d sec", getTitle(), artist.getName(), getDurSeconds());
     }
 
     @Override
