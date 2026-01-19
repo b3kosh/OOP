@@ -12,7 +12,6 @@ public class MusicDAO {
             if (rs.next()) return rs.getInt(1);
         }
 
-        // Теперь вставляем только name
         String insertSql = "INSERT INTO artists (name) VALUES (?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
             ps.setString(1, artistName);
@@ -52,7 +51,6 @@ public class MusicDAO {
 
     public List<Song> getAllSongs() {
         List<Song> list = new ArrayList<>();
-        // Убрали a.genre из запроса
         String sql = "SELECT m.id, m.title, m.duration_seconds, a.name " +
                 "FROM media_items m JOIN songs s ON m.id = s.media_id " +
                 "JOIN artists a ON s.artist_id = a.id ORDER BY m.id";
