@@ -5,7 +5,6 @@ import java.util.List;
 public class MusicDAO {
 
     private int getOrCreateArtist(Connection conn, String artistName) throws SQLException {
-
         String selectSql = "SELECT id FROM artists WHERE name = ?";
         try (PreparedStatement ps = conn.prepareStatement(selectSql)) {
             ps.setString(1, artistName);
@@ -13,11 +12,10 @@ public class MusicDAO {
             if (rs.next()) return rs.getInt(1);
         }
 
-
-        String insertSql = "INSERT INTO artists (name, genre) VALUES (?, ?) RETURNING id";
+        // Теперь вставляем только name
+        String insertSql = "INSERT INTO artists (name) VALUES (?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
             ps.setString(1, artistName);
-            ps.setString(2, "Various");
             ResultSet rs = ps.executeQuery();
             rs.next();
             return rs.getInt(1);
@@ -30,10 +28,7 @@ public class MusicDAO {
 
         try (Connection conn = DBConnection.getConnection()) {
             conn.setAutoCommit(false);
-
-
             int artistId = getOrCreateArtist(conn, song.getArtist().getName());
-
 
             int mediaId;
             try (PreparedStatement ps = conn.prepareStatement(sqlMedia)) {
@@ -45,7 +40,6 @@ public class MusicDAO {
                 song.setId(mediaId);
             }
 
-
             try (PreparedStatement ps = conn.prepareStatement(sqlSong)) {
                 ps.setInt(1, mediaId);
                 ps.setInt(2, artistId);
@@ -53,22 +47,20 @@ public class MusicDAO {
             }
 
             conn.commit();
-            System.out.println("✅ Saved successfully!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     public List<Song> getAllSongs() {
         List<Song> list = new ArrayList<>();
-        String sql = "SELECT m.id, m.title, m.duration_seconds, a.name, a.genre " +
+        // Убрали a.genre из запроса
+        String sql = "SELECT m.id, m.title, m.duration_seconds, a.name " +
                 "FROM media_items m JOIN songs s ON m.id = s.media_id " +
                 "JOIN artists a ON s.artist_id = a.id ORDER BY m.id";
         try (Connection conn = DBConnection.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                Artist art = new Artist(rs.getString("name"), rs.getString("genre"));
+                Artist art = new Artist(rs.getString("name")); // Создаем без жанра
                 Song s = new Song(rs.getString("title"), rs.getInt("duration_seconds"), art);
                 s.setId(rs.getInt("id"));
                 list.add(s);

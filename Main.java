@@ -16,10 +16,11 @@ public class Main {
             switch (cmd) {
                 case "1" -> myPlaylist.showAll();
                 case "2" -> {
-                    System.out.print("Songs's name: "); String t = sc.nextLine();
+                    System.out.print("Title: "); String t = sc.nextLine();
                     System.out.print("Sec: "); int d = Integer.parseInt(sc.nextLine());
                     System.out.print("Artist: "); String a = sc.nextLine();
-                    dao.saveSong(new Song(t, d, new Artist(a, "Pop")));
+                    // Теперь Artist создается только с одним параметром (имя)
+                    dao.saveSong(new Song(t, d, new Artist(a)));
                     refresh();
                 }
                 case "3" -> {
@@ -31,7 +32,6 @@ public class Main {
                             int dbId = myPlaylist.getSongs().get(num - 1).getId();
                             dao.deleteMedia(dbId);
                             refresh();
-                            System.out.println("Deleted!");
                         }
                     } catch (Exception e) { System.out.println("Invalid input."); }
                 }
