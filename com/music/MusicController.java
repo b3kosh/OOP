@@ -29,4 +29,10 @@ public class MusicController {
         musicDAO.insertSong(song);
         return "Song '" + song.getTitle() + "' added successfully!";
     }
+
+    @PutMapping("/songs/{id}")
+    public String updateSong(@PathVariable int id, @RequestBody Song song) {
+        musicDAO.updateSong(id, song);
+        return "Song with ID " + id + " was successfully updated!";
+    }
 }
