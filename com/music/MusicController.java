@@ -9,30 +9,23 @@ public class MusicController {
     private final MusicDAO musicDAO = new MusicDAO();
 
     @GetMapping("/songs")
-    public List<Song> getSongs() {
-        return musicDAO.getAllSongs();
-    }
+    public List<Song> getSongs() { return musicDAO.getAllSongs(); }
 
     @GetMapping("/songs/{id}")
-    public Song getSongById(@PathVariable int id) {
-        return musicDAO.getSongById(id);
+    public Song getSong(@PathVariable int id) { return musicDAO.getSongById(id); }
+
+    @PostMapping("/songs")
+    public String addSong(@RequestBody Song song) { return musicDAO.insertSong(song); }
+
+    @PutMapping("/songs/{id}")
+    public String updateSong(@PathVariable int id, @RequestBody Song song) {
+        musicDAO.updateSong(id, song);
+        return "Updated!";
     }
 
     @DeleteMapping("/songs/{id}")
     public String deleteSong(@PathVariable int id) {
         musicDAO.deleteSong(id);
-        return "Song with ID " + id + " was successfully deleted!";
-    }
-
-    @PostMapping("/songs")
-    public String addSong(@RequestBody Song song) {
-        musicDAO.insertSong(song);
-        return "Song '" + song.getTitle() + "' added successfully!";
-    }
-
-    @PutMapping("/songs/{id}")
-    public String updateSong(@PathVariable int id, @RequestBody Song song) {
-        musicDAO.updateSong(id, song);
-        return "Song with ID " + id + " was successfully updated!";
+        return "Deleted!";
     }
 }

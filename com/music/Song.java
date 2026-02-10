@@ -5,9 +5,8 @@ public class Song extends MediaItem {
     private String surname;
 
     public Song() { super(); }
-
     public Song(int id, String title, int durSeconds, Artist artist, String surname) {
-        super(id, title, durSeconds); // Передаем общие данные в родительский класс
+        super(id, title, durSeconds);
         this.artist = artist;
         this.surname = surname;
     }
